@@ -1,0 +1,4 @@
+#!/bin/bash
+#Script to run Video_Player_Server.py
+echo "Starting : Video_Player_Server.py"
+python Video_Player_Server.py
