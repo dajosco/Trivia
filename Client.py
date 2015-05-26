@@ -4,17 +4,29 @@
 # Name: Client.Py
 # Description: sends different UDP CMD through the network
 #################################################################
-
+import RPi.GPIO as GPIO
+import time
 import socket
 import os
 import sys, getopt
 import logging
+import logging.handlers
+
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
 
 def main(argv):
 	CMD =''
 	MESSAGE = ''
 	UDP_IP = "127.0.0.1"
 	UDP_PORT = 12121
+
+	OldInputStatus=False
+	CurrentInputStatus=False
+	InputChanged=False
 	
 	### Logging Setup
 	logging.basicConfig(level=logging.INFO)		#level=logging.DEBUG
@@ -55,17 +67,36 @@ def main(argv):
 		MESSAGE = CMD
 		logger.info('CMD received through cmd line = %s', MESSAGE)
 
+	while True:
+		
+		CurrentInputStatus = GPIO.input(18)
+		
+		if OldInputStatus <> CurrentInputStatus:
+			OldInputStatus = CurrentInputStatus
+			print "--------------------------\r\n Current Status:",CurrentInputStatus
+			InputChanged = True
+		
+		if InputChanged == True:
+			if CurrentInputStatus==False:
+				MESSAGE = "Simpsons"
+			InputChanged = False
+	
+		if MESSAGE<>"":
+			print "--------------------------"
+			print "UDP target IP:", UDP_IP
+			print "UDP target port:", UDP_PORT
+			print "message:", MESSAGE
+			
+			### Open UDP socket
+			sock = socket.socket(socket.AF_INET, # Internet
+								 socket.SOCK_DGRAM) # UDP
+			sock.sendto(MESSAGE, (UDP_IP, UDP_PORT))
 
-	print "UDP target IP:", UDP_IP
-	print "UDP target port:", UDP_PORT
-	print "message:", MESSAGE
-
-	### Open UDP socket
-	sock = socket.socket(socket.AF_INET, # Internet
-						 socket.SOCK_DGRAM) # UDP
-	sock.sendto(MESSAGE, (UDP_IP, UDP_PORT))
-
-	sock.close
+			sock.close
+			
+		MESSAGE=""
+		
+	
 			
 			
 			

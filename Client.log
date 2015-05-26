@@ -20,3 +20,12 @@
 2015-05-24 19:38:15,103 - __main__ - INFO - CMD received through cmd line = Simpson
 2015-05-24 19:38:19,510 - __main__ - INFO - Getting Command Line Parameters
 2015-05-24 19:38:19,514 - __main__ - INFO - CMD received through cmd line = Simpsons
+2015-05-24 20:50:03,482 - __main__ - INFO - Getting Command Line Parameters
+2015-05-24 20:50:03,486 - __main__ - INFO - CMD received through cmd line = Simpsons
+2015-05-24 21:11:52,456 - __main__ - INFO - Getting Command Line Parameters
+2015-05-24 22:52:26,145 - __main__ - INFO - Getting Command Line Parameters
+2015-05-24 22:54:17,311 - __main__ - INFO - Getting Command Line Parameters
+2015-05-25 01:22:39,862 - __main__ - INFO - Getting Command Line Parameters
+2015-05-25 01:23:39,326 - __main__ - INFO - Getting Command Line Parameters
+2015-05-25 01:23:58,252 - __main__ - INFO - Getting Command Line Parameters
+2015-05-25 01:27:06,219 - __main__ - INFO - Getting Command Line Parameters
