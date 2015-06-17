@@ -18,6 +18,7 @@
 #############################################################################################################
 __author__ = 'dajosco'
 import random
+import os
 
 # Number of questions to be ask during the game
 Game_Questions = 3
@@ -33,23 +34,23 @@ Question_executed = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 # Choose Qustion
 # Randomly selectects a question and verifies that has not bein asked in the same game
 def Choose_Question():
-    current_question = 0
-    loop_count = 0
+	current_question = 0
+	loop_count = 0
 
-    while True:
-        current_question = random.randrange(0, len(Question_Answer))
+	while True:
+		current_question = random.randrange(0, len(Question_Answer))
 
-        loop_count += 1
+		loop_count += 1
 
-        if Question_executed[current_question] == 0:
-            break
+		if Question_executed[current_question] == 0:
+			break
 
-        if loop_count > (Game_Questions + 1):
-            print("Something went wrong! Stuck inside subrutine: %s %d times" % ('Choose_Question', loop_count))
-            break
+		if loop_count > (Game_Questions + 1):
+			print("Something went wrong! Stuck inside subrutine: %s %d times" % ('Choose_Question', loop_count))
+			break
 
-    Question_executed[current_question] = 1
-    return current_question
+	Question_executed[current_question] = 1
+	return current_question
 
 
 ######################################################################################
@@ -64,42 +65,60 @@ def Initialize_Qestion_table():
 # Main
 # Main subrutine
 def main():
-    Team1_Score = 0
-    Team2_Score = 0
-    current_question = -1  # Stores the question being asked
-
+	Team1_Score = 0
+	Team2_Score = 0
+	current_question = -1  # Stores the question being asked
+	QuienJuega=0
+	
     #### for Simulation
-    Team2_Table = {'q': 1, 'w': 2, 'e': 3}
+	Team2_Table = {'q': 1, 'w': 2, 'e': 3}
 
-    Initialize_Qestion_table()  # clears all the flags
+	Initialize_Qestion_table()  # clears all the flags
+	
+	print ("\033c")
+	 
+	print ("\n \n \n Playing: Video 0: Invitacion a jugar equipo Rojo / Azul \n")
+	QuienJuega = raw_input ("[A]zul o [R]ojo : ")
 
+	if QuienJuega == 'A':
+		print ("Playing: Video 1: invitacion a jugar Equipo Rojo - Tenemos a Azul \n")
+	else:
+		print ("Playing: Video 2: invitacion a jugar Equipo Azul - Tenemos a Rojo \n")
+	
+	QuienJuega = raw_input("[A]zul o [R]")
+	
+	print ("\nPlaying: Video 2b: VIDEO REGLAS... \n")
+	
+	
     # Ask 3 questions
-    for x in range(1, Game_Questions + 1):
-        current_question = Choose_Question()
+	for x in range(1, Game_Questions + 1):
+		current_question = Choose_Question()
 
-        print("-----------------------------------------------------------\n"
-              "Question #%d  code %d" % (x, current_question + 1))
+		
+		print("-----------------------------------------------------------\n"
+			"Playing: Video %d\n"
+			"Pregunta #%d  codigo %d" % (x+8,x, current_question + 1))
 
         #### TODO: replace simulation by actual inputs
         #### For Simulation, will be replaced with pushbuttons
 
-        Teams_Answers = ""
+		Teams_Answers = ""
 
-        while len(Teams_Answers) < 2:
-            Teams_Answers = raw_input("\nTeam 1 answers with (1,2,3)\nTeam 2 answers with (Q,W,E)\n")
-
-        First_Answer = Teams_Answers[0]
-        Second_Answer = Teams_Answers[1]
+		while len(Teams_Answers) < 2:
+			Teams_Answers = raw_input("\nTeam 1 answers with (1,2,3)\nTeam 2 answers with (Q,W,E)\n")
+			
+		First_Answer = Teams_Answers[0]
+		Second_Answer = Teams_Answers[1]
 
         # Findout who replayed first
-        if First_Answer.isdigit():
-            First_Team_to_Answer = 1
-            Team1_Answer = int(First_Answer)
-            Team2_Answer = Team2_Table[Second_Answer]
-        else:
-            First_Team_to_Answer = 2
-            Team1_Answer = int(Second_Answer)
-            Team2_Answer = Team2_Table[First_Answer]
+		if First_Answer.isdigit():
+			First_Team_to_Answer = 1
+			Team1_Answer = int(First_Answer)
+			Team2_Answer = Team2_Table[Second_Answer]
+		else:
+			First_Team_to_Answer = 2
+			Team1_Answer = int(Second_Answer)
+			Team2_Answer = Team2_Table[First_Answer]
         #### End Simulation
 
         ###TODO: Real Inputs
@@ -113,62 +132,62 @@ def main():
         # - Once an option is pressed in a group it won't take in consideration the rest
 
         # initialize round scores
-        Team1_Round_Score = 0
-        Team2_Round_Score = 0
+		Team1_Round_Score = 0
+		Team2_Round_Score = 0
 
-        # Calculate the scores for Team1
-        if Team1_Answer == Question_Answer[current_question]:
-            Team1_Round_Score = 10
-            if First_Team_to_Answer == 1:
-                Team1_Round_Score += 5
+		# Calculate the scores for Team1
+		if Team1_Answer == Question_Answer[current_question]:
+			Team1_Round_Score = 10
+			if First_Team_to_Answer == 1:
+				Team1_Round_Score += 5
 
-        # Calculate the scores for Team2
-        if Team2_Answer == Question_Answer[current_question]:
-            Team2_Round_Score = 10
-            if First_Team_to_Answer == 2:
-                Team2_Round_Score += 5
+		# Calculate the scores for Team2
+		if Team2_Answer == Question_Answer[current_question]:
+			Team2_Round_Score = 10
+			if First_Team_to_Answer == 2:
+				Team2_Round_Score += 5
 
         # Set the winner
-        if Team1_Round_Score > Team2_Round_Score:
-            Round_Winner = 1
-        elif Team1_Round_Score < Team2_Round_Score:
-            Round_Winner = 2
-        else:
-            Round_Winner = 0
+		if Team1_Round_Score > Team2_Round_Score:
+			Round_Winner = 1
+		elif Team1_Round_Score < Team2_Round_Score:
+			Round_Winner = 2
+		else:
+			Round_Winner = 0
 
-        # Accumulate the total scores
-        Team1_Score += Team1_Round_Score
-        Team2_Score += Team2_Round_Score
+		# Accumulate the total scores
+		Team1_Score += Team1_Round_Score
+		Team2_Score += Team2_Round_Score
 
         # Present the correct answer
-        print('\nQuestion #%d  Code %d - correct Answer: %d' % (
-            x, current_question + 1, Question_Answer[current_question]))
+		print('\Pregunta #%d  Code %d - correct Answer: %d' % (
+		x, current_question + 1, Question_Answer[current_question]))
 
         # Present who was the winner
-        if Round_Winner > 0:
-            print("\nTeam %d wins this round" % (Round_Winner))
-        else:
-            print("\nNone of the answers were correct")
+		if Round_Winner > 0:
+			print("\nPlaying: Video %d: Equipo %d wins this round" % (Round_Winner+6,Round_Winner))
+		else:
+			print("\nPlaying: Video 6: Respondieron ambos incorrectamente")
 
         # Present partial scores
-        print('\nTeam 1 Score=%d points\nTeam 2 Score=%d points\n' % (Team1_Score, Team2_Score))
+		print('\nTeam 1 Score=%d points\nTeam 2 Score=%d points\n' % (Team1_Score, Team2_Score))
 
     # End of the Game
     # Present the winner of the Game and the points
-    print("=============================================================")
-    if Team1_Score > Team2_Score:
-        print('  TEAM 1 is the Winner!!! with %d over %d' % (Team1_Score, Team2_Score))
-    elif Team1_Score < Team2_Score:
-        print("  TEAM 2 is the Winner!!! with %d over %d" % (Team2_Score, Team1_Score))
-    else:
-        print("  It's a Tie!!! : Team 1 = %d points   and   Team 2 = %d points" % (Team1_Score, Team2_Score))
-    print("=============================================================")
+	print("=============================================================")
+	if Team1_Score > Team2_Score:
+		print('  TEAM 1 is the Winner!!! with %d over %d' % (Team1_Score, Team2_Score))
+	elif Team1_Score < Team2_Score:
+		print("  TEAM 2 is the Winner!!! with %d over %d" % (Team2_Score, Team1_Score))
+	else:
+		print("  It's a Tie!!! : Team 1 = %d points   and   Team 2 = %d points" % (Team1_Score, Team2_Score))
+	print("=============================================================")
 
     # Show the question tables
-    print("\n")
-    print(Question_Answer)
-    print(Question_executed)
+	print("\n")
+	print(Question_Answer)
+	print(Question_executed)
 
 
 if __name__ == "__main__":
-    main()
+	main()
